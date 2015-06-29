@@ -22,6 +22,7 @@ public class ItemAVL extends No {
 
 	public boolean ehExterno() {
 		System.out.println("metodo eh externo");
+		
 		return  (this.getFilhoEsquerdo() == null || this.getFilhoDireito() == null);
 	}
 
