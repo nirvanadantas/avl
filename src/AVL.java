@@ -1,5 +1,5 @@
 
-public class AVL {
+public class AVL extends ItemAVL{
 	private ItemAVL raiz;
 	public Comparador comparador;
 	
@@ -18,9 +18,33 @@ public class AVL {
 			this.raiz = new ItemAVL(key);
 			return raiz;
 		}else{
+			ItemAVL novo = new ItemAVL();
+			novo = this.busca(key);
+			return novo;
 			
 		}
-		return null;
+	}
+
+	
+	
+	public ItemAVL busca(Object key) {
+		if(this.isEmpty()){
+			return raiz;
+		}
+		if(this.ehExterno())
+			return this;
+		else if(comparador.comparar(this.getChave(), key) >= 0)//this.getChave() >= key)
+			return ((AVL) this.getFilhoDireito()).busca(key);
+		else //if(comparador.comparar(this.getChave(), key) < 0)//(this.getChave() < key)
+			return (((AVL) this.getFilhoEsquerdo()).busca(key));
+		
+		
+		
+	}
+
+	public boolean ehExterno() {
+		
+		return  (this.getFilhoEsquerdo() == null && this.getFilhoDireito() == null);
 	}
 
 	public boolean isEmpty() {
@@ -28,7 +52,7 @@ public class AVL {
 	}
 
 	public Object remover(Object key) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -52,7 +76,7 @@ public class AVL {
 	}
 
 	public void mostraArvore(ItemAVL raiz2, int i) {
-		// TODO Auto-generated method stub
+		this.mostra(raiz2, i);
 		
 	}
 

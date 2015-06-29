@@ -7,6 +7,10 @@ public class ItemAVL extends No {
 		this.setChave(key);
 	}
 
+	public ItemAVL() {
+		super();
+	}
+
 	public int getFB() {
 		return FB;
 	}
