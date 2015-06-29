@@ -1,8 +1,8 @@
 
 public class No {
 
-	private No filhoDireito = null;
-	private No filhoEsquerdo = null;
+	private No filhoDireito;
+	private No filhoEsquerdo;
 	private No pai = null;
 	private Object chave;
 	
@@ -10,6 +10,9 @@ public class No {
 	public No( Object chave) {
 		super();
 		this.chave = chave;
+		this.setFilhoDireito(null);
+		this.setFilhoEsquerdo(null);
+		
 	}
 	
 	

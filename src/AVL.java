@@ -14,12 +14,23 @@ public class AVL extends ItemAVL{
 	}
 
 	public ItemAVL inserir(Object key) {
+		ItemAVL novo = new ItemAVL(key);
 		if(this.isEmpty()){
-			this.raiz = new ItemAVL(key);
+			this.raiz = novo;
+			System.out.println("inserindo "+key+" na raiz");
 			return raiz;
 		}else{
-			ItemAVL novo = new ItemAVL();
-			novo = this.busca(key);
+			ItemAVL lugar = new ItemAVL();
+			lugar = this.busca(key);
+			System.out.println("chave do novo "+lugar.getChave());
+			if(comparador.comparar(lugar.getChave(), key) < 0){
+				lugar.setFilhoEsquerdo(novo);
+				
+			}else{
+				lugar.setFilhoDireito(novo);
+			}
+			
+			novo.setPai(lugar);
 			return novo;
 			
 		}
@@ -28,23 +39,18 @@ public class AVL extends ItemAVL{
 	
 	
 	public ItemAVL busca(Object key) {
-		if(this.isEmpty()){
-			return raiz;
-		}
+		
 		if(this.ehExterno())
-			return this;
+			return (AVL)this;
 		else if(comparador.comparar(this.getChave(), key) >= 0)//this.getChave() >= key)
 			return ((AVL) this.getFilhoDireito()).busca(key);
-		else //if(comparador.comparar(this.getChave(), key) < 0)//(this.getChave() < key)
+		else if(comparador.comparar(this.getChave(), key) < 0)//(this.getChave() < key)
 			return (((AVL) this.getFilhoEsquerdo()).busca(key));
+		else
+			return (AVL) this;
 		
 		
 		
-	}
-
-	public boolean ehExterno() {
-		
-		return  (this.getFilhoEsquerdo() == null && this.getFilhoDireito() == null);
 	}
 
 	public boolean isEmpty() {

@@ -17,8 +17,18 @@ public class ItemAVL extends No {
 
 	public void setFB(int fB) {
 		FB = fB;
-	}  
+	}
+
+
+	public boolean ehExterno() {
+		System.out.println("metodo eh externo");
+		return  (this.getFilhoEsquerdo() == null || this.getFilhoDireito() == null);
+	}
+
 	
 	
-	
+
+
+
+
 }
