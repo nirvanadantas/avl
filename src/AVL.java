@@ -39,9 +39,8 @@ public class AVL extends ItemAVL{
 	
 	
 	public ItemAVL busca(Object key) {
-		
+		System.out.println("caminho");
 		if(this.ehExterno())
-			
 			return (AVL)this;
 		else if(comparador.comparar(this.getChave(), key) >= 0)//this.getChave() >= key)
 			return ((AVL) this.getFilhoDireito()).busca(key);
