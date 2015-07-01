@@ -19,7 +19,6 @@ public class ItemAVL extends No {
 		FB = fB;
 	}
 
-
 	public boolean ehExterno() {
 		System.out.println("eh externo");
 		
