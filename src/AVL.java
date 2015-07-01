@@ -53,7 +53,10 @@ public class AVL extends ItemAVL{
 	}
 
 	private void atualizaFBantecessorInsercao(ItemAVL novo) {
-		if(novo.getPai() != null){
+		if(novo.getPai() == null){
+
+
+		}else if(novo.getPai() != null){
 
 			if(novo.getPai().getFilhoDireito() == novo){//sendofilho direito incrementa
 
@@ -142,16 +145,16 @@ public class AVL extends ItemAVL{
 	private ItemAVL rotacaoEsquerda(ItemAVL antiga) {
 		ItemAVL nova = (ItemAVL) antiga.getFilhoDireito();
 		nova.setPai(antiga.getPai());
-		
+
 		antiga.setFilhoDireito(nova.getFilhoEsquerdo());//guardei a arvore
-		
+
 		if(antiga.getFilhoDireito() != null){
 			antiga.getFilhoDireito().setPai(antiga);
 		}
-		
+
 		nova.setFilhoEsquerdo(antiga);
 		antiga.setPai(nova);
-		
+
 		if(nova.getPai()!= null){
 			if(nova.getPai().getFilhoDireito() == antiga){
 				nova.getPai().setFilhoDireito(nova);
@@ -159,7 +162,7 @@ public class AVL extends ItemAVL{
 				nova.getPai().setFilhoEsquerdo(nova);
 			}
 		}
-		
+
 		//como atualizar FB depois de rotacao?
 
 		return nova;
