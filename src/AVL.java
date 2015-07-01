@@ -30,6 +30,7 @@ public class AVL extends ItemAVL{
 				if(esse.getFilhoEsquerdo() == null){
 					esse.setFilhoEsquerdo(novo);
 					novo.setPai(esse);
+					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
 					atualizaFBantecessorInsercao(novo);
 					rebalanceia((ItemAVL) novo);
 				}else{
@@ -40,6 +41,9 @@ public class AVL extends ItemAVL{
 				if(esse.getFilhoDireito() == null){
 					esse.setFilhoDireito(novo);
 					novo.setPai(esse);
+					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
+					atualizaFBantecessorInsercao(novo);
+					rebalanceia((ItemAVL) novo);
 
 				}else{
 					inserirAvl((ItemAVL)esse.getFilhoDireito(), novo);
@@ -54,9 +58,10 @@ public class AVL extends ItemAVL{
 
 	private void atualizaFBantecessorInsercao(ItemAVL novo) {
 		if(novo.getPai() == null){
-
+			//se for raiz saia daqui
 
 		}else if(novo.getPai() != null){
+			System.out.println("atualizando antecessores");
 
 			if(novo.getPai().getFilhoDireito() == novo){//sendofilho direito incrementa
 
@@ -115,20 +120,45 @@ public class AVL extends ItemAVL{
 	}
 
 	private void rebalanceia(ItemAVL novo) {
+		int netoMandao;
+		int novoFB;
 		if(novo.getFB() == 2){
 
 			if(((ItemAVL) novo.getFilhoEsquerdo()).getFB() < 0){
-				novo = rotacaoDireitaDupla(novo);
+				netoMandao = ((ItemAVL) novo.getFilhoEsquerdo().getFilhoDireito()).getFB();
+				novo = rotacaoDireitaDupla(novo);				
+				novo.setFB(0);
+				novoFB = netoMandao == 1 ? -1 : 0;
+				novoFB = netoMandao == -1 ? 1 : 0;
+				((ItemAVL) novo.getFilhoEsquerdo()).setFB(novoFB);
+				System.out.println("RDD");
+				
 			}else{
 				novo = rotacaoDireita(novo);
+				
+				//atualizar FB's
+				
+				novo.setFB(0);
+				((ItemAVL) novo.getFilhoDireito()).setFB(0);
+				System.out.println("RD");
 			}
 
 		}else if(novo.getFB() == -2){
 
 			if(((ItemAVL) novo.getFilhoDireito()).getFB() > 0){
+				netoMandao = ((ItemAVL) novo.getFilhoDireito().getFilhoEsquerdo()).getFB();
 				novo = rotacaoEsquerdaDupla(novo);
+				novo.setFB(0);
+				novoFB = netoMandao == 1 ? -1 : 0;
+				novoFB = netoMandao == -1 ? 1 : 0;
+				System.out.println("REE");
+				
 			}else{
 				novo = rotacaoEsquerda(novo);
+//				atualizar FB's
+				novo.setFB(0);
+				((ItemAVL) novo.getFilhoDireito()).setFB(0);
+				System.out.println("RE");
 			}
 
 
