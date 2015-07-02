@@ -249,30 +249,34 @@ public class AVL extends ItemAVL{
 	}
 
 	private ItemAVL rotacaoDireita(ItemAVL antiga) {
-		ItemAVL nova = (ItemAVL) antiga.getFilhoEsquerdo();//arvore q vai ficar no lugar da antiga depois da rotacao
-		nova.setPai(antiga.getPai());
-
-		antiga.setFilhoEsquerdo(nova.getFilhoDireito());
-
-		if(antiga.getFilhoEsquerdo() != null){
+		ItemAVL esquerda = (ItemAVL) antiga.getFilhoEsquerdo();
+		antiga.setFilhoEsquerdo(esquerda.getFilhoDireito());
+		esquerda.setFilhoDireito(antiga);
+		/*
+		esquerda.setPai(antiga.getPai());
+ 
+		antiga.setFilhoEsquerdo(esquerda.getFilhoDireito());
+ 
+		if (antiga.getFilhoEsquerdo() != null) {
 			antiga.getFilhoEsquerdo().setPai(antiga);
 		}
-
-		nova.setFilhoDireito(antiga);
-		antiga.setPai(nova);
-
-		if(nova.getPai() != null){
-
-			if(nova.getPai().getFilhoDireito() == antiga){
-				nova.getPai().setFilhoDireito(nova);
-			}else if(nova.getPai().getFilhoEsquerdo() == antiga){
-				nova.getPai().setFilhoEsquerdo(nova);
+ 
+		esquerda.setFilhoDireito(antiga);
+		antiga.setPai(esquerda);
+ 
+		if (esquerda.getPai() != null) {
+ 
+			if (esquerda.getPai().getFilhoDireito() == antiga) {
+				esquerda.getPai().setFilhoDireito(esquerda);
+			
+			} else if (esquerda.getPai().getFilhoEsquerdo() == antiga) {
+				esquerda.getPai().setFilhoEsquerdo(esquerda);
 			}
-
 		}
-		//como atualizar FB depois de rotacao?
+ */
 
-		return nova;
+		return esquerda;
+
 	}
 
 	public ItemAVL busca(Object key) {
