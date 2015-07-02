@@ -26,11 +26,12 @@ public class AVL extends ItemAVL{
 			System.out.println("inserindo "+raiz.getChave()+" na raiz");
 			return raiz;
 		}else{
-			if(comparador.comparar(esse.getChave(), novo.getChave()) < 0){
+			if(comparador.comparar(esse.getChave(), novo.getChave()) > 0){
 				if(esse.getFilhoEsquerdo() == null){
 					esse.setFilhoEsquerdo(novo);
 					novo.setPai(esse);
 					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
+					
 					atualizaFBantecessorInsercao(novo);
 					rebalanceia((ItemAVL) novo);
 				}else{
@@ -42,9 +43,13 @@ public class AVL extends ItemAVL{
 					esse.setFilhoDireito(novo);
 					novo.setPai(esse);
 					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
-					atualizaFBantecessorInsercao(novo);
-					rebalanceia((ItemAVL) novo);
 
+					atualizaFBantecessorInsercao(novo);
+					System.out.println("arvore antes de balancear:");
+					this.mostra(this.getRaiz(), 1);
+					rebalanceia((ItemAVL) novo);
+					System.out.println("arvore depois de balancear:");
+					this.mostra(this.getRaiz(), 1);
 				}else{
 					inserirAvl((ItemAVL)esse.getFilhoDireito(), novo);
 				}
@@ -63,8 +68,8 @@ public class AVL extends ItemAVL{
 		}else if(novo.getPai() != null){
 			System.out.println("atualizando antecessores");
 
-			if(novo.getPai().getFilhoDireito() == novo){//sendofilho direito incrementa
-
+			if(novo.getPai().getFilhoDireito() == (No)novo){//sendo filho direito decrementa
+				System.out.println("é direito");
 				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
 
 			}else{
@@ -76,7 +81,7 @@ public class AVL extends ItemAVL{
 			atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
 
 		}else if (((ItemAVL) novo.getPai()).getFB() == 0 ) {
-
+			//se encontra um balanceamento antecessor ==0 para nao atualiza o pai
 			if(novo.getPai().getFilhoDireito() == novo){
 
 				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
@@ -86,6 +91,8 @@ public class AVL extends ItemAVL{
 				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
 
 			}
+
+			//atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
 		}
 
 
@@ -120,42 +127,74 @@ public class AVL extends ItemAVL{
 	}
 
 	private void rebalanceia(ItemAVL novo) {
+		//metodo adolescente
 		int netoMandao;
 		int novoFB;
 		if(novo.getFB() == 2){
 
-			if(((ItemAVL) novo.getFilhoEsquerdo()).getFB() < 0){
+			if(novo.getFilhoEsquerdo() != null && ((ItemAVL) novo.getFilhoEsquerdo()).getFB() < 0){
 				netoMandao = ((ItemAVL) novo.getFilhoEsquerdo().getFilhoDireito()).getFB();
 				novo = rotacaoDireitaDupla(novo);				
 				novo.setFB(0);
+
+				if(netoMandao == 1){
+					((ItemAVL) novo.getFilhoEsquerdo()).setFB(-1);
+				}else{
+					((ItemAVL) novo.getFilhoEsquerdo()).setFB(0);
+				}
+
+				if(netoMandao == -1){
+					((ItemAVL) novo.getFilhoDireito()).setFB(1);
+				}else {
+					((ItemAVL) novo.getFilhoDireito()).setFB(0);
+				}/*
 				novoFB = netoMandao == 1 ? -1 : 0;
 				novoFB = netoMandao == -1 ? 1 : 0;
+
 				((ItemAVL) novo.getFilhoEsquerdo()).setFB(novoFB);
+				 */
 				System.out.println("RDD");
-				
-			}else{
+
+			}
+			if(((ItemAVL) novo.getFilhoEsquerdo()).getFB() >=0 && novo.getFilhoEsquerdo() != null){
+				System.out.println("RD em no "+ novo.getChave() + ".");
 				novo = rotacaoDireita(novo);
-				
+
 				//atualizar FB's
-				
+
 				novo.setFB(0);
 				((ItemAVL) novo.getFilhoDireito()).setFB(0);
-				System.out.println("RD");
+				
 			}
 
 		}else if(novo.getFB() == -2){
 
-			if(((ItemAVL) novo.getFilhoDireito()).getFB() > 0){
+			if(novo.getFilhoDireito() != null && ((ItemAVL) novo.getFilhoDireito()).getFB() > 0){
 				netoMandao = ((ItemAVL) novo.getFilhoDireito().getFilhoEsquerdo()).getFB();
 				novo = rotacaoEsquerdaDupla(novo);
 				novo.setFB(0);
+				if(netoMandao == 1){
+					((ItemAVL) novo.getFilhoEsquerdo()).setFB(-1);
+				}else{
+					((ItemAVL) novo.getFilhoEsquerdo()).setFB(0);
+				}
+
+				if(netoMandao == -1){
+					((ItemAVL) novo.getFilhoDireito()).setFB(1);
+				}else{
+					((ItemAVL) novo.getFilhoDireito()).setFB(0);
+				}
+				/*
 				novoFB = netoMandao == 1 ? -1 : 0;
 				novoFB = netoMandao == -1 ? 1 : 0;
+				 */
 				System.out.println("REE");
-				
-			}else{
+
+			}
+			if(novo.getFilhoDireito() != null && ((ItemAVL) novo.getFilhoDireito()).getFB() <=0){
 				novo = rotacaoEsquerda(novo);
-//				atualizar FB's
+
+				//				atualizar FB's
 				novo.setFB(0);
 				((ItemAVL) novo.getFilhoDireito()).setFB(0);
 				System.out.println("RE");
@@ -166,8 +205,9 @@ public class AVL extends ItemAVL{
 
 		if(novo.getPai() != null){
 			rebalanceia((ItemAVL)novo.getPai());
+			System.out.println("balanceando pai de "+novo.getChave()+"...");
 		}else{
-
+			System.out.println("fim do rebalanceamento");
 		}
 
 	}
@@ -263,8 +303,6 @@ public class AVL extends ItemAVL{
 
 		return this.raiz;
 	}
-
-
 
 	public void mostra(ItemAVL no, int i) {
 
