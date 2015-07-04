@@ -30,10 +30,10 @@ public class AVL extends ItemAVL{
 				if(esse.getFilhoEsquerdo() == null){
 					esse.setFilhoEsquerdo(novo);
 					novo.setPai(esse);
-					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
-					
+					//System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
+
 					atualizaFBantecessorInsercao(novo);
-					rebalanceia((ItemAVL) novo);
+					//rebalanceia((ItemAVL) novo);
 				}else{
 					inserirAvl((ItemAVL)esse.getFilhoEsquerdo(), novo);
 				}
@@ -42,14 +42,14 @@ public class AVL extends ItemAVL{
 				if(esse.getFilhoDireito() == null){
 					esse.setFilhoDireito(novo);
 					novo.setPai(esse);
-					System.out.println("inserindo "+novo.getChave()+" na esquerda de "+esse.getChave());
+					//System.out.println("inserindo "+novo.getChave()+" na direita de "+esse.getChave());
 
 					atualizaFBantecessorInsercao(novo);
-					System.out.println("arvore antes de balancear:");
-					this.mostra(this.getRaiz(), 1);
-					rebalanceia((ItemAVL) novo);
-					System.out.println("arvore depois de balancear:");
-					this.mostra(this.getRaiz(), 1);
+					//System.out.println("arvore antes de balancear:");
+					//this.mostra(this.getRaiz(), 1);
+					//rebalanceia((ItemAVL) novo);
+					//System.out.println("arvore depois de balancear:");
+					//this.mostra(this.getRaiz(), 1);
 				}else{
 					inserirAvl((ItemAVL)esse.getFilhoDireito(), novo);
 				}
@@ -62,67 +62,52 @@ public class AVL extends ItemAVL{
 	}
 
 	private void atualizaFBantecessorInsercao(ItemAVL novo) {
-		if(novo.getPai() == null){
-			//se for raiz saia daqui
 
-		}else if(novo.getPai() != null){
-			System.out.println("atualizando antecessores");
+		if(novo.getPai() !=null){
+			System.out.println("if1");
 
-			if(novo.getPai().getFilhoDireito() == (No)novo){//sendo filho direito decrementa
-				System.out.println("é direito");
+			if(ehDireito(novo)){//sendo filho direito decrementa
 				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
+			}else{
+				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
+			}
+			if(((ItemAVL) novo.getPai()).getFB() == 0){
+				System.out.println("if1.5");
 
 			}else{
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
-
+				atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
 			}
 
-			atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
-
-		}else if (((ItemAVL) novo.getPai()).getFB() == 0 ) {
-			//se encontra um balanceamento antecessor ==0 para nao atualiza o pai
-			if(novo.getPai().getFilhoDireito() == novo){
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
-
-			}else{
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
-
-			}
-
-			//atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
+		}else{
+			System.out.println("Termino atulização fb antecessores");
 		}
 
 
+
 	}
+	private boolean ehDireito(ItemAVL novo) {
+
+		return novo.getPai().getFilhoDireito() == novo;
+	}
+
 	private void atualizaFBantecessorRemocao(ItemAVL novo) {
-		if(novo.getPai() != null){
+		if(novo.getPai() !=null){
+			System.out.println("if1");
 
-			if(novo.getPai().getFilhoDireito() == novo){//sendofilho direito incrementa
-
+			if(ehDireito(novo)){//sendo filho direito decrementa
 				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
+			}else{
+				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
+			}
+			if(((ItemAVL) novo.getPai()).getFB() != 0){
+				System.out.println("if1.5");
 
 			}else{
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
-
+				atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
 			}
 
-			atualizaFBantecessorInsercao((ItemAVL) novo.getPai());
-
-		}else if (((ItemAVL) novo.getPai()).getFB() != 0 ) {
-
-			if(novo.getPai().getFilhoDireito() == novo){
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() + 1);
-
-			}else{
-
-				((ItemAVL) novo.getPai()).setFB(((ItemAVL) novo.getPai()).getFB() - 1);
-
-			}
+		}else{
+			System.out.println("Termino atulização fb antecessores");
 		}
 	}
 
@@ -164,7 +149,7 @@ public class AVL extends ItemAVL{
 
 				novo.setFB(0);
 				((ItemAVL) novo.getFilhoDireito()).setFB(0);
-				
+
 			}
 
 		}else if(novo.getFB() == -2){
@@ -249,31 +234,32 @@ public class AVL extends ItemAVL{
 	}
 
 	private ItemAVL rotacaoDireita(ItemAVL antiga) {
+		//errado
 		ItemAVL esquerda = (ItemAVL) antiga.getFilhoEsquerdo();
 		antiga.setFilhoEsquerdo(esquerda.getFilhoDireito());
 		esquerda.setFilhoDireito(antiga);
 		/*
 		esquerda.setPai(antiga.getPai());
- 
+
 		antiga.setFilhoEsquerdo(esquerda.getFilhoDireito());
- 
+
 		if (antiga.getFilhoEsquerdo() != null) {
 			antiga.getFilhoEsquerdo().setPai(antiga);
 		}
- 
+
 		esquerda.setFilhoDireito(antiga);
 		antiga.setPai(esquerda);
- 
+
 		if (esquerda.getPai() != null) {
- 
+
 			if (esquerda.getPai().getFilhoDireito() == antiga) {
 				esquerda.getPai().setFilhoDireito(esquerda);
-			
+
 			} else if (esquerda.getPai().getFilhoEsquerdo() == antiga) {
 				esquerda.getPai().setFilhoEsquerdo(esquerda);
 			}
 		}
- */
+		 */
 
 		return esquerda;
 
